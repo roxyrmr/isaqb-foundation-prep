@@ -12,7 +12,7 @@ Unofficial exam practice application — 287 questions across 5 learning goals, 
 
 ## Live App
 
-> **https://roxyrmr.github.io/isaqb-foundation-prep/**
+> [Mock Prep](https://roxyrmr.github.io/isaqb-foundation-prep/)
 
 Click the link to start an exam or study session directly in your browser — no login, no installation.
 
@@ -23,7 +23,7 @@ Click the link to start an exam or study session directly in your browser — no
 A practice application for the iSAQB Certified Professional for Software Architecture — Foundation Level (CPSA-F) exam. It ships with **287 questions** covering all six CPSA-F 2025.1 learning goal chapters:
 
 - **250 independently authored questions** written to match the style and difficulty of the official exam
-- **37 questions from publicly available iSAQB official mock exams** (mock exams 2017-13, 2020-04, and 2021-05, published by iSAQB GmbH)
+- **37 questions from publicly available iSAQB official mock exams**
 
 The application is **fully static** — all exam logic, question sampling, scoring, and state management run in the browser. No login, no installation, no backend required.
 
@@ -39,26 +39,6 @@ The application is **fully static** — all exam logic, question sampling, scori
 | Explanation shown | Results page only | Immediately |
 | Shuffle | Always | Configurable |
 | Language | DE / EN toggle | DE / EN toggle |
-
----
-
-## Question Types
-
-**`pick` — Multi-select**
-The question specifies how many answers are correct ("Which TWO…"). Scoring is partial: one point per correct selection minus one point per incorrect selection, floored at zero. Selecting more options than the correct count scores zero.
-
-**`category` — Classification**
-Each option must be assigned to one of two or more categories. One point per correctly classified item.
-
----
-
-## Official Mock Exam Questions
-
-The 37 official mock exam questions are sourced from the publicly available iSAQB mock exams published by @isaqb-org:
-
-> [github.com/isaqb-org/foundation-exam-questions](https://github.com/isaqb-org/foundation-exam-questions)
-
-Mock exams included: **2017-13**, **2020-04**, and **2021-05**.
 
 ---
 
