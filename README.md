@@ -12,9 +12,9 @@ Unofficial exam practice application — 287 questions across 5 learning goals, 
 
 ## Live App
 
-> [Mock Prep](https://roxyrmr.github.io/isaqb-foundation-prep/)
-
 Click the link to start an exam or study session directly in your browser — no login, no installation.
+
+> [Mock Prep](https://roxyrmr.github.io/isaqb-foundation-prep/)
 
 ---
 
