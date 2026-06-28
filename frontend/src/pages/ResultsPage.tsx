@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useLang } from "../context/LangContext";
+import { t, type Lang } from "../i18n";
 import {
   type Answer,
   type Attempt,
@@ -34,7 +35,7 @@ export function ResultsPage() {
   const totalScore = answered.reduce((s, a) => s + a.score, 0);
   const maxTotal = attempt.questions.length;
   const percentage = maxTotal > 0 ? Math.round((totalScore / maxTotal) * 100 * 10) / 10 : 0;
-  const passed = percentage >= 75;
+  const passed = percentage >= 60;
 
   // Chapter breakdown
   const chapterMap: Record<string, { name: string; score: number; count: number }> = {};
@@ -66,27 +67,39 @@ export function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
+    <div className="min-h-screen bg-slate-100 pb-16">
       {/* Score banner */}
-      <div className={`relative py-12 text-center ${passed ? "bg-green-600" : "bg-red-500"} text-white`}>
+      <div
+        className="relative py-14 text-center text-white overflow-hidden"
+        style={{
+          background: passed
+            ? "linear-gradient(135deg, #065F46 0%, #059669 60%, #10B981 100%)"
+            : "linear-gradient(135deg, #7F1D1D 0%, #DC2626 60%, #EF4444 100%)",
+        }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse at 30% 60%, rgba(255,255,255,0.12) 0%, transparent 60%)" }}
+        />
         <button
           onClick={toggleLang}
-          className="absolute top-4 right-4 px-2.5 py-1.5 bg-white/20 hover:bg-white/30 rounded-lg text-xs font-medium"
+          className="absolute top-4 right-4 px-2.5 py-1.5 rounded-lg text-xs font-medium hover:bg-white/20 transition-colors"
+          style={{ background: "rgba(255,255,255,0.15)" }}
         >
-          {lang === "de" ? "🇩🇪 DE" : "🇬🇧 EN"}
+          {t("switchLang", lang)}
         </button>
-        <h1 className="text-4xl font-bold">{percentage}%</h1>
-        <p className="text-xl mt-2 font-medium">{passed ? "Passed" : "Not Passed"} — iSAQB threshold: 75%</p>
+        <ScoreRing percentage={percentage} passed={passed} lang={lang} />
         <p className="text-sm mt-1 opacity-80">
           {totalScore.toFixed(1)} / {maxTotal} points · {attempt.questions.length} questions
         </p>
-        {attempt.username && <p className="text-sm mt-1 opacity-70">{attempt.username}</p>}
+        <p className="text-xs mt-1 opacity-60">{t("thresholdNote", lang)}</p>
+        {attempt.username && <p className="text-sm mt-2 opacity-70">{attempt.username}</p>}
       </div>
 
       <div className="max-w-3xl mx-auto px-4 mt-8 space-y-8">
         {/* Chapter breakdown */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-800 mb-4">Chapter Breakdown</h2>
+        <section className="bg-white rounded-2xl p-6" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)" }}>
+          <h2 className="text-sm font-bold text-slate-800 mb-5">{t("chapterBreakdown", lang)}</h2>
           <div className="space-y-3">
             {Object.entries(chapterMap).map(([code, { name, score, count }]) => {
               const pct = count > 0 ? Math.round((score / count) * 100) : 0;
@@ -98,7 +111,7 @@ export function ResultsPage() {
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className={`h-2 rounded-full ${pct >= 75 ? "bg-green-500" : "bg-red-400"}`}
+                      className={`h-2 rounded-full ${pct >= 60 ? "bg-green-500" : "bg-red-400"}`}
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -109,8 +122,8 @@ export function ResultsPage() {
         </section>
 
         {/* Question review */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-800 mb-4">Question Review</h2>
+        <section className="bg-white rounded-2xl p-6" style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)" }}>
+          <h2 className="text-sm font-bold text-slate-800 mb-5">{t("qReview", lang)}</h2>
           <div className="space-y-2">
             {attempt.questions.map((q, i) => {
               const ans = attempt.answers[q.id];
@@ -154,19 +167,49 @@ export function ResultsPage() {
           <button
             onClick={handleRetake}
             disabled={retaking}
-            className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50"
+            className="px-8 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+            style={{ boxShadow: "0 4px 14px rgba(79,70,229,0.3)" }}
           >
-            {retaking ? "Starting…" : "Retake Same Questions"}
+            {retaking ? t("starting", lang) : t("retakeSame", lang)}
           </button>
           <button
             onClick={() => navigate("/")}
-            className="px-8 py-3 border-2 border-blue-600 text-blue-600 rounded-xl font-semibold hover:bg-blue-50"
+            className="px-8 py-3 border-2 border-indigo-500 text-indigo-600 rounded-xl font-bold hover:bg-indigo-50 transition-colors"
           >
-            New Session
+            {t("newSession", lang)}
           </button>
         </div>
       </div>
     </div>
+  );
+}
+
+function ScoreRing({ percentage, passed, lang }: { percentage: number; passed: boolean; lang: Lang }) {
+  const r = 52, cx = 68, cy = 68;
+  const circ = 2 * Math.PI * r;
+  const offset = circ * (1 - percentage / 100);
+  return (
+    <svg width="136" height="136" viewBox="0 0 136 136" className="mx-auto mb-2">
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="10" />
+      <circle
+        cx={cx} cy={cy} r={r} fill="none"
+        stroke="white" strokeWidth="10"
+        strokeDasharray={circ.toFixed(2)}
+        strokeDashoffset={offset.toFixed(2)}
+        strokeLinecap="round"
+        transform={`rotate(-90 ${cx} ${cy})`}
+      />
+      <text x={cx} y={cy - 6} textAnchor="middle" dominantBaseline="middle"
+        fontSize="26" fontWeight="700" fill="white"
+        fontFamily="-apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+        {percentage}%
+      </text>
+      <text x={cx} y={cy + 16} textAnchor="middle"
+        fontSize="10" fill="rgba(255,255,255,0.82)" letterSpacing="1.5"
+        fontFamily="-apple-system, BlinkMacSystemFont, system-ui, sans-serif">
+        {passed ? t("passedLabel", lang) : t("failedLabel", lang)}
+      </text>
+    </svg>
   );
 }
 
@@ -177,7 +220,7 @@ function QuestionDetail({
 }: {
   question: Question;
   answer: Answer | undefined;
-  lang: string;
+  lang: Lang;
 }) {
   const qText = lang === "en" && question.text_en ? question.text_en : question.text;
   const selected = answer?.selected;
@@ -187,7 +230,7 @@ function QuestionDetail({
       <p className="text-sm text-gray-700 py-3">{qText}</p>
       {answer?.is_overselected && (
         <p className="text-xs text-red-600 mb-2">
-          Over-selection: you selected more options than the number of correct answers (score = 0).
+          {t("overSelected", lang)}
         </p>
       )}
       <div className="space-y-2">

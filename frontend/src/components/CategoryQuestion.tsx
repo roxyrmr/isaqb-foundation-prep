@@ -1,4 +1,5 @@
 import type { Choice } from "../engine";
+import { t } from "../i18n";
 
 interface Props {
   choices: Choice[];
@@ -25,7 +26,7 @@ export function CategoryQuestion({ choices, lang, categories, selected, onChange
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-gray-500">Assign each statement to the correct category.</p>
+      <p className="text-sm text-gray-500">{t("assignLabel", lang as "de" | "en")}</p>
       <div className="overflow-x-auto">
         <table className="w-full text-sm border-collapse">
           <thead>
