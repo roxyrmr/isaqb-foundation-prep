@@ -14,7 +14,7 @@ Unofficial exam practice application — 287 questions across 5 learning goals, 
 
 ## Live App
 
-> **https://`<your-username>`.github.io/isaqb-exam-python/**
+> **https://roxyrmr.github.io/isaqb-foundation-prep/**
 
 Click the link to start an exam or study session directly in your browser — no login, no installation.
 
