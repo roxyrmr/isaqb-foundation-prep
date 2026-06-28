@@ -42,6 +42,15 @@ The application is **fully static** — all exam logic, question sampling, scori
 
 ---
 
+## Official Mock Exam Questions
+
+The 37 official mock exam questions are sourced from publicly available mock exams published by [@isaqb-org](https://github.com/isaqb-org):
+
+**Repository:** [isaqb-org/foundation-exam-questions](https://github.com/isaqb-org/foundation-exam-questions)
+
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for how to run the project locally, deploy to GitHub Pages, add questions, and submit pull requests.
